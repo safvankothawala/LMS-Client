@@ -18,4 +18,5 @@ public class LotteryManagementSystemApp {
 			homePage.setVisible(true);
 		});
 	}
+
 }

@@ -1,19 +1,38 @@
 package com.lms.app;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import org.json.JSONObject;
 
 public class WelcomePage extends JPanel {
 	private CardLayout cardLayout;
 	private JPanel cards;
 	static String CUSTOMER_NAME;
 	static String CUSTOMER_IDENTITY;
+	private String winnerTicketNumber;
+	private String winnerTicketOwnerIdentity;
 
 	public WelcomePage(CardLayout cardLayout, JPanel cards) {
 		this.cardLayout = cardLayout;
 		this.cards = cards;
+
+		checkForWinningTicket();
 
 		setLayout(new BorderLayout());
 
@@ -74,5 +93,82 @@ public class WelcomePage extends JPanel {
 		buttonPanel.add(createButton);
 
 		add(buttonPanel, BorderLayout.CENTER); // Buttons in the center
+
+		if (winnerTicketNumber != null) {
+			JPanel winnerPanel = new JPanel(new BorderLayout());
+			JLabel winnerTicketLabel = new JLabel("Winner Ticket - " + winnerTicketNumber, SwingConstants.CENTER);
+			winnerTicketLabel.setFont(new Font("Arial", Font.BOLD, 32)); // Increase font size
+			winnerTicketLabel.setForeground(Color.GREEN); // Set the text color to black
+			welcomePanel.add(winnerTicketLabel, BorderLayout.CENTER);
+			JLabel winnerTicketMessage = new JLabel("Lottery prize will be transfered to Owner - " + winnerTicketOwnerIdentity,
+					SwingConstants.CENTER);
+			winnerTicketMessage.setFont(new Font("Arial", Font.BOLD, 24)); // Increase font size
+			winnerTicketMessage.setForeground(Color.BLUE); // Set the text color to black
+			welcomePanel.add(winnerTicketMessage, BorderLayout.SOUTH);
+			add(winnerPanel, BorderLayout.SOUTH);
+		}
+
 	}
+
+	private void checkForWinningTicket() {
+		try {
+			if (CUSTOMER_IDENTITY != null) {
+				URL url = new URL("http://localhost:8080/lms/checkwinner/" + CUSTOMER_IDENTITY);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("GET");
+				connection.setRequestProperty("Accept", "text/event-stream");
+				int attempt = 0;
+				int responseCode = connection.getResponseCode();
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+					try (Scanner scanner = new Scanner(connection.getInputStream())) {
+						while (scanner.hasNextLine()) {
+							if (attempt > 1) {
+								break;
+							}
+							String line = scanner.nextLine();
+							System.out.println(line);
+							if (line.startsWith("data:") && !line.equals("data:")) {
+								// Process the SSE event data
+								String eventData = line.substring(5).trim();
+								JSONObject eventDataJson = new JSONObject(eventData);
+
+								System.out.println("Received SSE Event: " + eventData);
+
+								if (eventDataJson.getInt("responseCode") == 0) {
+									winnerTicketNumber = eventDataJson.getString("ticketNumber");
+									winnerTicketOwnerIdentity = eventDataJson.getString("ticketOwnerIdentity");
+
+									// Display the ticket number and ticket owner identity
+									System.out.println("Winning Ticket Number: " + winnerTicketNumber);
+									System.out.println("Ticket Owner Identity: " + winnerTicketOwnerIdentity);
+								} else {
+									System.out.println("No winning ticket found");
+									attempt++;
+								}
+
+								break;
+
+							} else {
+								System.out.println("No winning ticket found");
+								attempt++;
+							}
+						}
+					}
+				} else {
+					System.out.println("HTTP Response Code: " + responseCode);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		// Call the method to check for winning ticket
+		checkForWinningTicket();
+	}
+
 }
