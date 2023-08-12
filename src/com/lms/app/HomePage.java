@@ -30,7 +30,7 @@ class HomePage extends JFrame {
 		this.cardLayout = cardLayout;
 		this.cards = cards;
 
-		JLabel headerLabel = new JLabel("Lottery Client App", SwingConstants.CENTER);
+		JLabel headerLabel = new JLabel("Lottery Customer Application", SwingConstants.CENTER);
 		JLabel footerLabel = new JLabel("App Version: " + appVersion, SwingConstants.LEFT);
 		JButton registerButton = new JButton("Register Customer");
 		registerButton.setPreferredSize(new Dimension(400, 40));
