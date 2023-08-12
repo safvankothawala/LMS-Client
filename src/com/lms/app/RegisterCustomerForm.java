@@ -1,11 +1,14 @@
 package com.lms.app;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,79 +25,112 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import org.json.JSONObject;
 
 class RegisterCustomerForm extends JPanel {
 	private CardLayout cardLayout;
 	private JPanel cards;
+	public static String appVersion;
+
 
 	public RegisterCustomerForm(CardLayout cardLayout, JPanel cards) {
 		this.cardLayout = cardLayout;
 		this.cards = cards;
 
-		setLayout(new GridLayout(6, 2, 10, 10));
-		Font labelFont = new Font("Arial", Font.BOLD, 30); // Create a new font with size 30
-		Font headerlabelFont = new Font("Arial", Font.BOLD, 42); // Create a new font with size 30
+		setLayout(new BorderLayout());
+		JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JLabel headerLabel = new JLabel("Register Customer");
+		headerLabel.setFont(new Font("Arial", Font.BOLD, 42));
+		headerPanel.add(headerLabel);
+		Font txtFieldLabelFont = new Font("Arial", Font.PLAIN, 24);
 
-		// Create components
-		JLabel headerLabel = new JLabel("Register Customer", SwingConstants.LEFT);
-		headerLabel.setFont(headerlabelFont); // Set the new font for the header label
-		headerLabel.setOpaque(true); // Allow background color to be set
-		headerLabel.setForeground(Color.BLACK); // Set text color to white
+		JPanel formPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel customeNameLabel = new JLabel("Customer Name: ");
+		Font labelFont = new Font("Arial", Font.BOLD, 24);
+
+		JLabel nameLabel = new JLabel("Customer Name:");
+		nameLabel.setFont(labelFont);
+		JTextField nameField = new JTextField(20);
+
 		JLabel identityLabel = new JLabel("Identity:");
-		JLabel paymentMethodLabel = new JLabel("Payment Method:");
-		JLabel licenseKeyLabel = new JLabel("License Key:");
-
-		// Set the new font for all other labels
-		customeNameLabel.setFont(labelFont);
 		identityLabel.setFont(labelFont);
+		JTextField identityField = new JTextField(20);
+
+		JLabel paymentMethodLabel = new JLabel("Payment Method:");
 		paymentMethodLabel.setFont(labelFont);
+		JTextField paymentMethodField = new JTextField(20);
+
+		JLabel licenseKeyLabel = new JLabel("License Key:");
 		licenseKeyLabel.setFont(labelFont);
+		JTextField licenseKeyField = new JTextField(20);
 
-		JTextField customerNameField = new JTextField(30);
-		JTextField identityField = new JTextField(30);
-		JTextField paymentMethodField = new JTextField(30);
-		JTextField licenseKeyField = new JTextField(30);
+		nameField.setFont(txtFieldLabelFont);
+		licenseKeyField.setFont(txtFieldLabelFont);
+		identityField.setFont(txtFieldLabelFont);
+		paymentMethodField.setFont(txtFieldLabelFont);
 
-		customerNameField.setFont(labelFont);
-		identityField.setFont(labelFont);
-		paymentMethodField.setFont(labelFont);
-		licenseKeyField.setFont(labelFont);
+		formPanel.add(nameLabel, gbc);
+		gbc.gridx++;
+		formPanel.add(nameField, gbc);
 
+		gbc.gridx = 0;
+		gbc.gridy++;
+		formPanel.add(identityLabel, gbc);
+		gbc.gridx++;
+		formPanel.add(identityField, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy++;
+		formPanel.add(paymentMethodLabel, gbc);
+		gbc.gridx++;
+		formPanel.add(paymentMethodField, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy++;
+		formPanel.add(licenseKeyLabel, gbc);
+		gbc.gridx++;
+		formPanel.add(licenseKeyField, gbc);
+
+		/*
+		 * JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); JButton
+		 * submitButton = new JButton("Submit"); submitButton.setFont(new Font("Arial",
+		 * Font.BOLD, 24));
+		 * 
+		 * buttonPanel.add(submitButton);
+		 */
+
+		//
+		// Submit Button
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		gbc.gridwidth = 2;
+		gbc.anchor = GridBagConstraints.CENTER;
 		JPanel submitPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 70, 70));
 		JButton submitButton = new JButton("Submit");
-		submitButton.setPreferredSize(new Dimension(100, 30)); // Adjust dimensions as needed
-		Font buttonFont = submitButton.getFont();
-		submitButton.setFont(new Font(buttonFont.getName(), buttonFont.getStyle(), 32)); // Adjust font size
-
+		submitButton.setPreferredSize(new Dimension(200, 40));
+		submitButton.setFont(new Font(submitButton.getFont().getName(), Font.BOLD, 32));
 		submitPanel.add(submitButton);
+		formPanel.add(submitPanel, gbc);
+		//
 
-		// Set layout
-		setLayout(new GridLayout(6, 2));
+		// Create a footer panel
+		JPanel footerPanel = new JPanel(new BorderLayout());
+		JLabel footerLabel = new JLabel("App Version: " + appVersion);
+		footerLabel.setForeground(Color.WHITE); 
+		footerPanel.add(footerLabel, BorderLayout.WEST);
+		footerPanel.setBackground(Color.BLACK);
 
-		// Add components to the frame
-		add(headerLabel);
-
-		add(new JLabel()); // Empty label for spacing
-
-		add(customeNameLabel);
-		add(customerNameField);
-
-		add(identityLabel);
-		add(identityField);
-
-		add(paymentMethodLabel);
-		add(paymentMethodField);
-
-		add(licenseKeyLabel);
-		add(licenseKeyField);
-
-		add(new JLabel()); // Empty label for spacing
-		add(submitButton);
+		// Add the footer panel to the bottom of the form
+		add(footerPanel, BorderLayout.SOUTH);
+		add(headerPanel, BorderLayout.NORTH);
+		add(formPanel, BorderLayout.CENTER);
+		// add(buttonPanel, BorderLayout.SOUTH);
 
 		submitButton.addActionListener(new ActionListener() {
 			@Override
@@ -102,7 +138,7 @@ class RegisterCustomerForm extends JPanel {
 				String identity = identityField.getText();
 				String licenseKey = licenseKeyField.getText();
 				String paymentMethod = paymentMethodField.getText();
-				String customerName = customerNameField.getText();
+				String customerName = nameField.getText();
 
 				JSONObject jsonObject = new JSONObject();
 				jsonObject.put("customerIdentity", identity);

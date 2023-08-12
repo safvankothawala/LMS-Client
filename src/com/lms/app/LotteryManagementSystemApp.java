@@ -34,7 +34,8 @@ public class LotteryManagementSystemApp {
 			System.out.println("App-Version: " + version);
 			HomePage.appVersion = version;
 			WelcomePage.appVersion = version;
-
+			RegisterCustomerForm.appVersion = version;
+			
 			HomePage homePage = new HomePage("Lottery Management System", cardLayout, cards);
 			homePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			homePage.pack();

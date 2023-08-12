@@ -57,11 +57,12 @@ public class WelcomePage extends JPanel {
 
 		JPanel footerPanel = new JPanel(new BorderLayout());
 		JLabel footerLabel = new JLabel("App Version: " + appVersion);
-		footerLabel.setForeground(Color.BLACK); 
-		footerLabel.setBackground(Color.DARK_GRAY);
+		footerLabel.setForeground(Color.WHITE); 
+		footerPanel.setBackground(Color.BLACK);
 		footerPanel.add(footerLabel, BorderLayout.WEST);
 
 		JPanel footerContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		footerContainer.setBackground(Color.BLACK);
 		footerContainer.add(footerPanel);
 
 		add(welcomePanel, BorderLayout.NORTH); // Welcome text above the buttons
