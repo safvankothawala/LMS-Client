@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: com.lms.app.LotteryManagementSystemApp
+Class-Path: lib/json-20230618.jar
