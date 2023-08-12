@@ -8,18 +8,20 @@ import java.awt.event.ActionListener;
 public class TransactionSuccessPage extends JPanel {
 	private CardLayout cardLayout;
 	private JPanel cards;
+	private String txsuccessMessage;
 
 	public TransactionSuccessPage(CardLayout cardLayout, JPanel cards, String successMessage) {
 		this.cardLayout = cardLayout;
 		this.cards = cards;
+		this.txsuccessMessage = successMessage;
 
 		setLayout(new BorderLayout());
 
 		JLabel successLabel = new JLabel("Success", SwingConstants.CENTER);
 		successLabel.setFont(new Font("Arial", Font.BOLD, 32));
-        successLabel.setForeground(Color.GREEN); 
+		successLabel.setForeground(Color.GREEN);
 
-		JLabel messageLabel = new JLabel(successMessage, SwingConstants.CENTER);
+		JLabel messageLabel = new JLabel(txsuccessMessage, SwingConstants.CENTER);
 		messageLabel.setFont(new Font("Arial", Font.PLAIN, 32));
 
 		JButton okButton = new JButton("OK");
@@ -44,4 +46,15 @@ public class TransactionSuccessPage extends JPanel {
 			}
 		});
 	}
+
+	public String getTxsuccessMessage() {
+		return txsuccessMessage;
+	}
+
+	public void setTxsuccessMessage(String txsuccessMessage) {
+		this.txsuccessMessage = txsuccessMessage;
+	}
+
+	
+
 }

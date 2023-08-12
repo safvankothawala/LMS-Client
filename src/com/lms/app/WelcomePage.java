@@ -57,7 +57,9 @@ public class WelcomePage extends JPanel {
 		purchaseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Handle purchase button click
+				PurchaseTicketPage purchaseTicketPage = new PurchaseTicketPage(cardLayout, cards);
+				cards.add(purchaseTicketPage, "purchaseTicket"); // Add the purchaseTicketPage to the cards panel
+				cardLayout.show(cards, "purchaseTicket"); // Switch to the purchaseTicketPage
 			}
 		});
 
