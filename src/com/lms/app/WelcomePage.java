@@ -27,6 +27,7 @@ public class WelcomePage extends JPanel {
 	static String CUSTOMER_IDENTITY;
 	private String winnerTicketNumber;
 	private String winnerTicketOwnerIdentity;
+	private String winnerDrawNumber;
 
 	public WelcomePage(CardLayout cardLayout, JPanel cards) {
 		this.cardLayout = cardLayout;
@@ -94,20 +95,26 @@ public class WelcomePage extends JPanel {
 
 		add(buttonPanel, BorderLayout.CENTER); // Buttons in the center
 
+		addPanelForWinnerTicket(welcomePanel);
+
+	}
+
+	private void addPanelForWinnerTicket(JPanel welcomePanel) {
 		if (winnerTicketNumber != null) {
 			JPanel winnerPanel = new JPanel(new BorderLayout());
-			JLabel winnerTicketLabel = new JLabel("Winner Ticket - " + winnerTicketNumber, SwingConstants.CENTER);
-			winnerTicketLabel.setFont(new Font("Arial", Font.BOLD, 32)); // Increase font size
-			winnerTicketLabel.setForeground(Color.GREEN); // Set the text color to black
-			welcomePanel.add(winnerTicketLabel, BorderLayout.CENTER);
-			JLabel winnerTicketMessage = new JLabel("Lottery prize will be transfered to Owner - " + winnerTicketOwnerIdentity,
+			JLabel winnerTicketLabel = new JLabel(
+					"Winner Ticket Number - " + winnerTicketNumber + " , Draw Number - " + winnerDrawNumber,
 					SwingConstants.CENTER);
-			winnerTicketMessage.setFont(new Font("Arial", Font.BOLD, 24)); // Increase font size
-			winnerTicketMessage.setForeground(Color.BLUE); // Set the text color to black
+			winnerTicketLabel.setFont(new Font("Arial", Font.BOLD, 24));
+			winnerTicketLabel.setForeground(Color.ORANGE);
+			welcomePanel.add(winnerTicketLabel, BorderLayout.CENTER);
+			JLabel winnerTicketMessage = new JLabel(
+					"Lottery prize will be transfered to Owner - " + winnerTicketOwnerIdentity, SwingConstants.CENTER);
+			winnerTicketMessage.setFont(new Font("Arial", Font.BOLD, 24));
+			winnerTicketMessage.setForeground(Color.BLUE);
 			welcomePanel.add(winnerTicketMessage, BorderLayout.SOUTH);
 			add(winnerPanel, BorderLayout.SOUTH);
 		}
-
 	}
 
 	private void checkForWinningTicket() {
@@ -137,7 +144,7 @@ public class WelcomePage extends JPanel {
 								if (eventDataJson.getInt("responseCode") == 0) {
 									winnerTicketNumber = eventDataJson.getString("ticketNumber");
 									winnerTicketOwnerIdentity = eventDataJson.getString("ticketOwnerIdentity");
-
+									winnerDrawNumber = eventDataJson.getString("drawNumber");
 									// Display the ticket number and ticket owner identity
 									System.out.println("Winning Ticket Number: " + winnerTicketNumber);
 									System.out.println("Ticket Owner Identity: " + winnerTicketOwnerIdentity);

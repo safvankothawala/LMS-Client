@@ -42,6 +42,8 @@ public class TransactionSuccessPage extends JPanel {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				WelcomePage welcomePage = new WelcomePage(cardLayout, cards);
+				cards.add(welcomePage, "welcomePage");
 				cardLayout.show(cards, "welcomePage");
 			}
 		});
