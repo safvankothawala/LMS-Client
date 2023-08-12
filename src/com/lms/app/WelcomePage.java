@@ -28,6 +28,7 @@ public class WelcomePage extends JPanel {
 	private String winnerTicketNumber;
 	private String winnerTicketOwnerIdentity;
 	private String winnerDrawNumber;
+	public static String appVersion;
 
 	public WelcomePage(CardLayout cardLayout, JPanel cards) {
 		this.cardLayout = cardLayout;
@@ -55,8 +56,9 @@ public class WelcomePage extends JPanel {
 		welcomePanel.add(customerNameLabel, BorderLayout.CENTER);
 
 		JPanel footerPanel = new JPanel(new BorderLayout());
-		JLabel footerLabel = new JLabel("Private and Confidential");
-		footerLabel.setForeground(Color.GRAY); // Set the text color to gray
+		JLabel footerLabel = new JLabel("App Version: " + appVersion);
+		footerLabel.setForeground(Color.BLACK); 
+		footerLabel.setBackground(Color.DARK_GRAY);
 		footerPanel.add(footerLabel, BorderLayout.WEST);
 
 		JPanel footerContainer = new JPanel(new FlowLayout(FlowLayout.LEFT));

@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import org.json.JSONObject;
 
 class HomePage extends JFrame {
+	public static String appVersion;
 	private CardLayout cardLayout;
 	private JPanel cards;
 
@@ -30,7 +31,7 @@ class HomePage extends JFrame {
 		this.cards = cards;
 
 		JLabel headerLabel = new JLabel("Lottery Client App", SwingConstants.CENTER);
-		JLabel footerLabel = new JLabel("Private and Confidential", SwingConstants.LEFT);
+		JLabel footerLabel = new JLabel("App Version: " + appVersion, SwingConstants.LEFT);
 		JButton registerButton = new JButton("Register Customer");
 		registerButton.setPreferredSize(new Dimension(400, 40));
 
@@ -51,7 +52,7 @@ class HomePage extends JFrame {
 		homeCard.add(headerLabel, BorderLayout.NORTH);
 		homeCard.add(buttonContainer, BorderLayout.CENTER);
 		footerLabel.setOpaque(true);
-		footerLabel.setBackground(Color.DARK_GRAY);
+		footerLabel.setBackground(Color.BLACK);
 		footerLabel.setForeground(Color.WHITE);
 		homeCard.add(footerLabel, BorderLayout.SOUTH);
 
